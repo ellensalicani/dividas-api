@@ -1,20 +1,22 @@
 <?php 
-    $username = $_GET['username'];
-    // $password = $_POST['password'];
-    
-    echo "<script>alert({$username})</script>";
-    
-    // echo $username;
+    header("Access-Control-Allow-Origin: *");   
+    header("Access-Control-Allow-Headers: Content-Type");    
 
-    // require('../../conexao/conexao.php');
+    $user = $_GET['username'];
+    $password = $_GET['password'];
 
-    // $sql_login = "SELECT * from users where username = '$username' and password = '$password'";
+    require('../conexao/conexao.php');
 
-    // mysqli_query($conn, $sql_login) or die("Erro ao verificar login!!!");
-    // session_start();
-    // $_SESSION['username'] = $username;
+    $sql_login = "SELECT * from users where username = '$user' and pass = '$password'";
 
-    // echo "<script>alert('Login efetuado com sucesso')</script>";
-    // header("Location: ../pages/home.html");
+    $result = mysqli_query($conn, $sql_login) or die("Erro ao verificar login!!!");
+
+    if(mysqli_num_rows($result) == 0) echo "Falha";    
+    else {
+        $transform = mysqli_fetch_object($result);
+        $toJson = json_encode($transform);
+        echo $toJson;
+      
+    }
 
 ?>
